@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="335.0" prefWidth="885.0" styleClass="anchorPaneBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ken.kenutils.controller.HomeController">
+    <stylesheets>
+        <URL value="@kenutils.css" />
+    </stylesheets>
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="361.0" layoutY="14.0" prefHeight="48.0" prefWidth="169.0" text="K3N UTILS" textFill="WHITE">
+         <font>
+            <Font name="Cambria Bold Italic" size="25.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnMinimise" layoutX="795.0" layoutY="11.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="49.0" style="-fx-background-color: transparent;" text="-" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="22.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnClose" layoutX="834.0" layoutY="8.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="49.0" style="-fx-background-color: transparent;" text="X" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="22.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnPatchmaker" layoutX="320.0" layoutY="89.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="251.0" text="Patch Maker" />
+      <Button fx:id="btnFileComparator" layoutX="321.0" layoutY="164.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="251.0" text="File Comparator" />
+      <Button fx:id="btnFileInjector" layoutX="321.0" layoutY="242.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="251.0" text="File Injector" />
+   </children>
+</AnchorPane>
