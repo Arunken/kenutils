@@ -362,8 +362,8 @@ public class FileComparatorServiceImpl implements FileComparatorService{
                 }
             }
             else if(extension.equals(".class") && shaDifference){
-            	String sourceCode1 = DecompileUtils.decompileTest(file1.getAbsolutePath());
-                String sourceCode2 = DecompileUtils.decompileTest(file2.getAbsolutePath());
+            	String sourceCode1 = DecompileUtils.decompile(file1.getAbsolutePath());
+                String sourceCode2 = DecompileUtils.decompile(file2.getAbsolutePath());
                 if(!sourceCode1.equals(sourceCode2)){
                 	mapJavaFileDifference.put(index, relativePath1.normalize().toString());
                 }
