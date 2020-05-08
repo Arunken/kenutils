@@ -50,12 +50,6 @@ public class FileComparatorController implements Initializable {
     private Button btnMultithreading;
     
     @FXML
-    private Button btnClose;
-    
-    @FXML
-    private Button btnMinimise;
-    
-    @FXML
     private ProgressBar pBar;
     
     private static boolean multithreading = false;
@@ -65,15 +59,6 @@ public class FileComparatorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
     	btnGenerateLog.setText("Generate Patch");
-        btnClose.setOnAction(e -> {
-            ((Stage)btnMinimise.getScene().getWindow()).close();
-            HomeController.primaryStage.show();
-            
-        });
-        
-        btnMinimise.setOnAction(e -> {
-            ((Stage)btnMinimise.getScene().getWindow()).setIconified(true);
-        });
         
         btnBrowseDirPath1.setOnAction(e -> {
             onDirSelect1();

@@ -65,12 +65,6 @@ public class FileInjectorController implements Initializable {
     private Button btnLoopInject;
     
     @FXML
-    private Button btnClose;
-    
-    @FXML
-    private Button btnMinimise;
-    
-    @FXML
     private TextField txtPeriod;
     
     @FXML
@@ -109,16 +103,6 @@ public class FileInjectorController implements Initializable {
         txtCount.setVisible(false);
         lblInterval.setVisible(false);
         lblCount.setVisible(false);
-        
-        btnClose.setOnAction(e -> {
-            ((Stage)btnMinimise.getScene().getWindow()).close();
-            HomeController.primaryStage.show();
-            
-        });
-        
-        btnMinimise.setOnAction(e -> {
-            ((Stage)btnMinimise.getScene().getWindow()).setIconified(true);
-        });
         
         btnBrowseSourceDir.setOnAction(e -> {
         	onSourceDirButtonClick();

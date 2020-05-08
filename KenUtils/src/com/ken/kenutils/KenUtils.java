@@ -49,7 +49,7 @@ public class KenUtils extends Application {
         });
         
         stage.setScene(scene);
-        stage.initStyle(StageStyle.UNDECORATED);
+        //stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
     }
 

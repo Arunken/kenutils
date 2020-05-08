@@ -26,12 +26,6 @@ import javafx.stage.StageStyle;
  * @author K3N
  */
 public class HomeController implements Initializable {
-
-    @FXML
-    private Button btnClose;
-    
-    @FXML
-    private Button btnMinimise;
     
     @FXML
     private Button btnPatchmaker;
@@ -42,18 +36,22 @@ public class HomeController implements Initializable {
     @FXML
     private Button btnFileInjector;
     
+    @FXML
+    private Button btnJuxtaposer;
+    
     public static Stage primaryStage = null;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        btnClose.setOnAction(e -> {
-            Platform.exit();
-        });
+		/*
+		 * btnClose.setOnAction(e -> { Platform.exit(); });
+		 */
         
-        btnMinimise.setOnAction(e -> {
-            ((Stage)btnMinimise.getScene().getWindow()).setIconified(true);
-        });
+		/*
+		 * btnMinimise.setOnAction(e -> {
+		 * ((Stage)btnMinimise.getScene().getWindow()).setIconified(true); });
+		 */
         
         btnPatchmaker.setOnAction(e -> {
             openWindow(e, PathConstants.PATCH_MAKER_RESOURCE);
@@ -66,15 +64,22 @@ public class HomeController implements Initializable {
        btnFileInjector.setOnAction(e -> {
     	   openWindow(e, PathConstants.FILE_INJECTOR_RESOURCE);
         });
+       
+       btnJuxtaposer.setOnAction(e -> {
+    	   openWindow(e, PathConstants.JUXTAPOSER_RESOURCE);
+        });
     }
 
+    
+    
     private void openWindow(ActionEvent event,String resourcePath){
         try {
             Parent root = FXMLLoader.load(getClass().getResource(resourcePath));
             Stage stage = new Stage();
             GeneralUtils genUtils = new GeneralUtils(root, stage);
             genUtils.setMoveWindowOnDrag(true);
-            genUtils.setStageStyle(StageStyle.UNDECORATED);
+            //genUtils.setStageStyle(StageStyle.UNDECORATED);
+            genUtils.setCloseOperation();
             genUtils.setShowStage(Boolean.TRUE);
             
             primaryStage = (Stage)((Node)(event.getSource())).getScene().getWindow();

@@ -5,6 +5,9 @@
  */
 package com.ken.kenutils.FxUtils;
 
+import com.ken.kenutils.controller.HomeController;
+
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -70,9 +73,9 @@ public class GeneralUtils {
     
     public void setShowStage(Boolean showStage){
         if(showStage){
-            this.stage.show();
+            stage.show();
         }else{
-            this.stage.hide();
+            stage.hide();
         }
     }
     
@@ -87,6 +90,13 @@ public class GeneralUtils {
     
     public static void showWaitMessage(){
     	getAlert(AlertType.WARNING, "Please wait", null, "Please wait for the process to complete!");
+    }
+    
+    public void setCloseOperation() {
+    	stage.setOnHidden(e -> {
+    	    stage.close();
+    	    HomeController.primaryStage.show();
+    	});
     }
     
 }

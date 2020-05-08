@@ -57,11 +57,6 @@ public class PatchMakerController implements Initializable {
     @FXML
     private Button btnInheritDirStr;
     
-    @FXML
-    private Button btnClose;
-    
-    @FXML
-    private Button btnMinimise;
     
     private FileChooser fileChooser = new FileChooser();
     private Alert alert = new Alert(Alert.AlertType.NONE);
@@ -88,15 +83,18 @@ public class PatchMakerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        btnClose.setOnAction(e -> {
-            ((Stage)btnMinimise.getScene().getWindow()).close();
-            HomeController.primaryStage.show();
-            
-        });
+		/*
+		 * btnClose.setOnAction(e -> {
+		 * ((Stage)btnMinimise.getScene().getWindow()).close();
+		 * HomeController.primaryStage.show();
+		 * 
+		 * });
+		 */
         
-        btnMinimise.setOnAction(e -> {
-            ((Stage)btnMinimise.getScene().getWindow()).setIconified(true);
-        });
+		/*
+		 * btnMinimise.setOnAction(e -> {
+		 * ((Stage)btnMinimise.getScene().getWindow()).setIconified(true); });
+		 */
         
         btnBrowseChangelog.setOnAction(e -> {
            onChangeLogButtonClick();
