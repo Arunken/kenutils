@@ -1,0 +1,521 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="tag"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!DOCTYPE html>
+<html>
+<head>
+<jsp:include page="/WEB-INF/static/header.jsp"></jsp:include>
+
+</head>
+<body>
+	<jsp:include page="/WEB-INF/static/homeTopNavBar.jsp"></jsp:include>
+	<section id="contact">
+		<div class="container-fluid">
+			<div class="section-header"></div>
+			<div class="row">
+				<div class="col-lg-10 offset-lg-1">
+					<div class="card">
+						<div class="card-header text-center">
+							<h3>Self Declaration</h3>
+						</div>
+						<div class="card-body1 form">
+							<div class="alert alert-info justify mb-4">This is a Self
+								Declaration for local travel and it cannot be used to cross the
+								District borders. Please note that frivolous self-declaration
+								and violation of self-declaration will be viewed seriously and
+								strict action will be taken.</div>
+							<form action="savePermission" method="post" id="complaintForm">
+								<div class="form-row">
+									<div class="form-group col-lg-4">
+										<label class="required">Your Mobile Number</label> <input
+											type="text" class="form-control"
+											placeholder="Enter your mobile number..." name="mobile"
+											id="mobile">
+									</div>
+
+									<div class="form-group col-lg-4 hideme" hidden="true">
+										<label>Enter OTP</label> <input type="text"
+											class="form-control" id="userOtp" name="userOtp">
+									</div>
+									<div class="form-group col-lg-2 hideme" hidden="true">
+										<button type="button" class="btn btn-info" id="verify"
+											style="margin-top: 2em;">verify</button>
+										<input type="hidden" name="${_csrf.parameterName}"
+											value="${_csrf.token}" id="csrf">
+									</div>
+								</div>
+								<div class="form-row">
+										<div class="form-group col-lg-4">
+								<div class="form-group text-center">
+												<img src="../home/captcha" id="captcha"><span><a
+													href="#" onclick="nrefresh()"><img id="captcharef"
+														src="<tag:url value="/resources/images/refresh.png"/>"></a></span>
+											</div>
+											<div class="form-group text-center" >
+												<label class="form-control-label" id="captchalab">Captcha:</label> <input 
+													type="text" class="form-control" id="ncaptchaCode"
+													tabindex="3" autocomplete="off" name="ncaptchaCode">
+											</div>
+											<div class="form-group text-center" id="otpdiv" >
+											<button class="btn btn btn-primary" type="button" id="send"
+											style="margin-top: 2em;">verify</button>
+											</div>
+											</div>
+											</div>
+								
+								<div class="content" hidden="true">
+									<div class="form-row">
+										<div class="form-group col-lg-6">
+											<label class="required">Select District</label>
+											<div class="input-group ui-widget">
+												<select class="form-control chosen-select" name="distId"
+													id="distId">
+													<option value="">--Select--</option>
+													<jstl:forEach items="${districtList}" var="list">
+														<option value="${list.distId}"
+															${(list.distId eq 5) ?'disabled':''}>${list.distName }</option>
+													</jstl:forEach>
+												</select>
+											</div>
+
+										</div>
+										<div class="form-group col-lg-6">
+											<label class="required">Name</label>
+											<tag:bind path="permission.name">
+												<input type="text" class="form-control"
+													placeholder="name..." name="${status.expression}"
+													value="${status.value}" id="name">
+											</tag:bind>
+										</div>
+
+									</div>
+									<div class="form-row">
+										<div class="form-group col-lg-6">
+											<label class="required">Localbody From</label>
+											<div class="input-group ui-widget">
+												<select class="form-control chosen-select"
+													name="localBodyId" id="localBodyId">
+													<option value="">--Select District First--</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group col-lg-6">
+											<label class="required">Place From</label>
+											<tag:bind path="permission.from">
+												<input type="text" class="form-control"
+													placeholder="coming from" name="${status.expression}"
+													value="${status.value}" id="from">
+											</tag:bind>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-lg-6">
+											<label class="required">Localbody To</label>
+											<div class="input-group ui-widget">
+												<select class="form-control chosen-select"
+													name="localBodyIdTo" id="localBodyIdTo">
+													<option value="">--Select District First--</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group col-lg-6">
+											<label class="required">Place To</label>
+											<tag:bind path="permission.to">
+												<input type="text" class="form-control"
+													placeholder="going to" name="${status.expression}"
+													value="${status.value}" id="to">
+											</tag:bind>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-lg-12">
+											<label>Your Address</label>
+											<tag:bind path="permission.address">
+												<textarea class="form-control" id="address" rows="3"
+													placeholder="Enter your address.."
+													name="${status.expression}">${status.value}</textarea>
+											</tag:bind>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-lg-6">
+											<label class="required">Select Vehicle type</label>
+											<div class="input-group ui-widget">
+												<select class="form-control chosen-select"
+													name="vehicleTypeId" id="vehicleTypeId">
+													<option value="">--Select--</option>
+													<jstl:forEach items="${listType}" var="list">
+														<option value="${list.vehicleTypeId}">${list.name }</option>
+													</jstl:forEach>
+												</select>
+											</div>
+
+										</div>
+										<div class="form-group col-lg-6">
+											<label class="required">Vehicle number</label>
+											<tag:bind path="permission.vehicleNo">
+												<input type="text" class="form-control"
+													placeholder="Vehicle number..." name="${status.expression}"
+													value="${status.value}" id="vehicleNo">
+											</tag:bind>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-lg-6">
+											<label class="required">Going with</label>
+											<tag:bind path="permission.goingWith">
+												<input type="text" class="form-control"
+													placeholder="Keep blank if you are going alone"
+													name="${status.expression}" value="${status.value}"
+													id="goingWith">
+											</tag:bind>
+										</div>
+										<div class="form-group col-lg-6">
+											<label class="required">Purpose</label>
+											<tag:bind path="permission.purpose">
+												<input type="text" class="form-control"
+													placeholder="purpose.." name="${status.expression}"
+													value="${status.value}" id="purpose">
+											</tag:bind>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-lg-6">
+
+											<label class="required">Going date and time</label>
+											<tag:bind path="permission.goingDate">
+												<input type="text" class="form-control"
+													placeholder="return date and time"
+													name="${status.expression}" value="${status.value}"
+													id="goingDate" readonly="readonly">
+											</tag:bind>
+										</div>
+										<div class="form-group col-lg-6">
+
+											<label class="required">Return date and time</label>
+											<tag:bind path="permission.returnBack">
+												<input type="text" class="form-control"
+													placeholder="return date and time"
+													name="${status.expression}" value="${status.value}"
+													id="returnBack" readonly="readonly">
+											</tag:bind>
+										</div>
+									</div>
+
+									<div class="form-group text-center">
+										<input type="hidden" name="${_csrf.parameterName}"
+											value="${_csrf.token}" id="csrf">
+										<button type="submit"
+											class="form-control-submit-button disabled">Save</button>
+											<input type="hidden" id="message"
+												name="message" value="${message}">
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<jsp:include page="/WEB-INF/static/footer.jsp"></jsp:include>
+
+	<jsp:include page="/WEB-INF/static/script.jsp"></jsp:include>
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			var message = $("#message").val();
+			if (message != "") {
+				alert(message);
+			}
+			$("#goingDate,#returnBack").datetimepicker({
+				ampm : true,
+				format : 'd-m-Y h:i A',
+				formatTime : 'h:i A',
+				minDate : 0,
+				step : 15,
+				validateOnBlur : false,
+			});
+
+			$(".chosen-select").chosen();
+			$.validator.setDefaults({
+				ignore : ":hidden:not(.chosen-select)"
+			});
+			$("#complaintForm").validate({
+				onkeyup : true,
+				rules : {
+					mobile : {
+						required : true,
+						pattern : new RegExp('^[0-9]{10}$')
+					},
+					distId : {
+						required : true
+					},
+					localBodyId : {
+						required : true
+					},
+					localBodyIdTo : {
+						required : true
+					},
+					name : {
+						required : true,
+						pattern : new RegExp('^([A-Za-z ]){1,20}$')
+					},
+					address : {
+						required : true,
+						pattern : new RegExp('^([A-Za-z0-9-_,:/@#.$!*\'%^()\n ]){1,2000}$')
+					},
+					vehicleTypeId : {
+						required : true
+					},
+					vehicleNo : {
+						required : true,
+						pattern : new RegExp('^([A-Za-z0-9- ]){7,15}$')
+					},
+					goingDate : {
+						required : true
+					},
+					returnBack : {
+						required : true
+					},
+					purpose : {
+						required : true,
+						pattern : new RegExp('^([A-Za-z0-9- ]){1,50}$')
+					},
+					from : {
+						required : true,
+						pattern : new RegExp('^([A-Za-z0-9- ]){1,50}$')
+					},
+					to : {
+						required : true,
+						pattern : new RegExp('^([A-Za-z0-9- ]){1,50}$')
+					},
+					time : {
+						required : true
+					},
+
+				},
+				messages : {
+					mobile : "Enter mobile number",
+					distId : "Select district",
+					localBodyId : "Select localbody from",
+					localBodyIdTo : "Select localbody to",
+					name : "Enter Your name (Max 20 characters)",
+					address : "Only alphabets, digits, space and the following special characters are allowed(-_,:/@#.$!*'%^()) (200 characters max)",
+					vehicleTypeId : "Select Vehicle Type",
+					vehicleNo : "Invalid Vehicle Number. Only alphabets, digits, space and hyphen are allowed (15 characters max)",
+					purpose : "Invalid Purpose. Only alphabets, digits, space and hyphen are allowed (15 characters max)",
+					goingDate : "Enter Going date and time",
+					returnBack : "Enter Returning date and time (Greater than Going date)",
+					from : "Invalid Place From. Only alphabets, digits, space and hyphen are allowed (50 characters max)",
+					to : "Invalid Place To. Only alphabets, digits, space and hyphen are allowed (50 characters max)",
+					time : "Enter Going time",
+
+				},
+
+				errorPlacement : function(error, element) {
+					$(element).parents('.form-group').append(error);
+
+				}
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		function sendMessage(mobile) {
+			alert("OTP send to your mobile number. Please proceed with OTP.");
+			timer(180);
+			$(".hideme").prop('hidden', false);
+			$.ajax({
+				url : '../home/sendMessage',
+				data : {
+					mobile : mobile,
+					_csrf : $("#csrf").val(),
+				},
+				type : "POST"
+			});
+		}
+		$(document).on('change', '#returnBack', function() {
+			if ($("#goingDate").val() != '') {
+				var date1 = $("#goingDate").datetimepicker('getValue');
+				var date2 = $("#returnBack").datetimepicker('getValue');
+				if (date2 <= date1) {
+					alert("Return date and time must greater than Going date and time");
+					$("#returnBack").val('');
+				} else if (date2 < date1) {
+					alert("Return date and time must greater than Going date and time");
+					$("#returnBack").val('');
+				}
+			} else {
+				alert("Enter Going date first");
+				$("#returnBack").val('');
+			}
+		});
+		
+		function otpCallback(){
+			$("#captcha").prop('hidden', true);
+			$("#captcharef").prop('hidden', true);
+			$("#captchalab").prop('hidden', true);
+			$("#ncaptchaCode").prop('hidden', true);
+			$(".hideme").prop('hidden', false);
+		}
+		
+		$(document).on('click', '#send', function() {
+			if ($("#mobile").val() != "" && $("#mobile").val().length == 10) {
+				
+				//sendMessage($("#mobile").val());
+				/* $.ajax({
+						url : 'checkLogin',
+						data : {
+							captchaCode : $("#ncaptchaCode").val(),
+							_csrf : $("#csrf").val(),
+						},
+						type : "POST",
+						success : function(data) {
+							if (data != 0) {
+								alert("Invalid captcha!");
+								nrefresh();
+								//$(".content").prop('hidden', false);
+								//$("#send").prop('hidden', true);
+								//$("#mobile").attr("readonly", true);
+							} else {
+								$("#captcha").prop('hidden', true);
+								$("#captcharef").prop('hidden', true);
+								$("#captchalab").prop('hidden', true);
+								$("#ncaptchaCode").prop('hidden', true);
+								sendMessage($("#mobile").val());
+								
+							}
+						},
+					});  */
+				sendMessageWithCaptcha($("#mobile").val(),$("#ncaptchaCode").val(), otpCallback);
+
+			} else {
+				alert("Enter valid mobile nummber");
+			}
+		});
+		$(document).on('click', '#verify', function() {
+
+			$.ajax({
+				url : '../home/checkOtp',
+				data : {
+					otp : $("#userOtp").val(),
+					_csrf : $("#csrf").val()
+				},
+				type : 'POST',
+				success : function(data) {
+
+					if (data == '1') {
+						$(".content").prop('hidden', false);
+						$("#otpdiv").prop('hidden', true);
+						$(".hideme").prop('hidden', true);
+						$("#mobile").closest('div').removeClass('form-group col-lg-4').addClass('form-group col-lg-6');
+						$("#mobile").attr("readonly", true);
+					} else {
+						alert("Invalid otp");
+						$("#userOtp").val('');
+						/* 
+						$(".hideme").prop('hidden', true); */
+						$("#mobile").closest('div').removeClass('form-group col-lg-6').addClass('form-group col-lg-4');
+						$("#otpdiv").prop('hidden', false);
+						$("#send").text("Resend otp")
+						$("#send").show();
+					}
+				}
+			});
+
+		});
+	</script>
+	<script type="text/javascript">
+		let timerOn = true;
+
+		function timer(remaining) {
+			var m = Math.floor(remaining / 60);
+			var s = remaining % 60;
+
+			m = m < 10 ? '0' + m : m;
+			s = s < 10 ? '0' + s : s;
+			$("#send").text(m + ':' + s);
+			$("#send").attr('disabled', true);
+			remaining -= 1;
+
+			if (remaining >= 0 && timerOn) {
+				setTimeout(function() {
+					timer(remaining);
+				}, 1000);
+				return;
+			}
+
+			if (!timerOn) {
+				return;
+			}
+
+			/* alert('Timeout for otp'); */
+			$("#send").text("Resend");
+			$("#send").attr('disabled', false);
+		}
+
+		$(document).on('change', '#distId', function() {
+			$.ajax({
+				url : '../home/listLocalBody',
+				data : {
+					distId : $(this).val(),
+					_csrf : $("#csrf").val()
+				},
+				type : 'POST',
+				success : function(data) {
+
+					var option = '';
+					$("#localBodyId option").remove();
+					$("#localBodyId").append('<option value="">Choose LocalBody</option>');
+					$("#localBodyIdTo option").remove();
+					$("#localBodyIdTo").append('<option value="">Choose LocalBody</option>');
+					if (data.length > 0) {
+
+						for (var i = 0; i < data.length; i++) {
+
+							if (data[i].district.distId == 12) {
+								if (data[i].localBodyId == 632) {
+									option += '<option value="'+data[i].localBodyId+'">' + data[i].name + '</option>';
+								}
+							} else {
+								option += '<option value="'+data[i].localBodyId+'">' + data[i].name + '</option>';
+							}
+						}
+
+					}
+					$("#localBodyId").append(option);
+					$('#localBodyId').trigger("chosen:updated");
+					$("#localBodyIdTo").append(option);
+					$('#localBodyIdTo').trigger("chosen:updated");
+				}
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		/* $('#name,#goingWith,#purpose').on('keypress', function(e) {
+			var regex = new RegExp("^[a-zA-Z ]*$");
+			var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+			if (regex.test(str)) {
+				return true;
+			}
+			e.preventDefault();
+			return false;
+		});
+
+		$('#mobile').on('keypress', function(e) {
+			var regex = new RegExp("^[0-9]{10}$");
+			var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+			if (regex.test(str)) {
+				return true;
+			}
+			e.preventDefault();
+			return false;
+		}); */
+	</script>
+</body>
+</html>
